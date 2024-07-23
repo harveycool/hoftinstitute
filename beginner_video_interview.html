@@ -1,0 +1,68 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale= 1" />
+    <title>Question 1</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: flex-start;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        width: 100vw;
+        background-color: beige;
+        overflow: auto;
+      }
+      #questionVideo,
+      #answerRecorder {
+        width: 30em; /* Adjust as needed */
+        height: 30em; /* Adjust as needed */
+      }
+      button {
+        padding: 10px 20px 20px 20px;
+        font-size: 1.5em;
+        cursor: pointer;
+        margin-bottom: 1em;
+        background-color: lightblue;
+        border-radius: 10px; /* Add this line to make the corners rounded */
+      }
+    </style>
+  </head>
+  <body>
+    <img src="HOFT_web1.png" alt="logo" style="width: 10em" />
+    <h1>Question 1</h1>
+    <video id="questionVideo" src="Beginner Level Interview.mp4" muted></video>
+    <video id="answerRecorder"></video>
+    <div id="countdownQuestion"></div>
+    <div id="countdownAnswer"></div>
+    <button id="startQuestion">Start question</button>
+    <button id="nextQuestion" disabled>Next question</button>
+
+    <script src="script.js"></script>
+  </body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Question 1</title>
+  </head>
+  <body>
+    <img src="HOFT_web1.png" alt="logo" class="img" />
+    <h1 id="questionHeader"></h1>
+    <video id="questionVideo" class="questionVideo" src=""></video>
+    <p id="answerRecorderWarning"></p>
+    <video id="answerRecorder"></video>
+    <div id="countdownQuestion"></div>
+    <div id="countdownAnswer"></div>
+    <button id="startQuestion" class="button">Start question</button>
+    <button id="nextQuestion" class="button" disabled>Next question</button>
+
+    <script src="beginner_video_interview.js"></script>
+  </body>
+</html>
