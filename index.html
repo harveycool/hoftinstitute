@@ -38,6 +38,7 @@
       </div>
       <div style="margin-top: 20px">
         <button type="submit">Submit</button>
+        <button type="skip">Skip</button>
       </div>
     </form>
     <script>
@@ -46,6 +47,11 @@
       submitButton.addEventListener("click", function (event) {
         event.preventDefault(); // Prevent the form from submitting
         window.location.href = "beginner interview.html";
+      });
+
+      const skipButton = document.querySelector('button[type="skip"]');
+      skipButton.addEventListener("click", function (event) {
+        window.location.href = "beginner_video_interview.html";
       });
     </script>
   </body>
