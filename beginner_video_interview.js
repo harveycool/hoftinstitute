@@ -17,7 +17,7 @@ const videoKeys = [
   'bv1.mp4',
   'bv2.mp4',
   'bv2.mp4'
-]
+];
 
 const videoSources = videoKeys.map(key =>{const params ={
   Bucket: 'hoftfiles',
