@@ -22,7 +22,9 @@ const videoSources = videoKeys.map(key =>{const params ={
   Bucket: 'hoftfiles',
   Key: key,
   Expires: 60*10
-}})
+};
+return s3.getsignedUrl('getObject', params);
+})
 
 console.log(videoSources);
 
