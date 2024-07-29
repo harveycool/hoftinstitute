@@ -13,9 +13,23 @@ const s3 = new AWS.S3 ({
   endpoint: spacesEndpoint,
 });
 
-let videoSources = ["https://hoftfiles.nyc3.digitaloceanspaces.com/bv1.mp4", 
-  "https://hoftfiles.nyc3.digitaloceanspaces.com/bv2.mp4",
-  "https://hoftfiles.nyc3.digitaloceanspaces.com/bv2.mp4"];
+const videoKeys = [
+  'bv1.mp4',
+  'bv2.mp4',
+  'bv2.mp4'
+]
+
+const videoSources = videoKeys.map(key =>{const params ={
+  Bucket: 'hoftfiles',
+  Key: key,
+  Expires: 60*10
+}})
+
+console.log(videoSources);
+
+// let videoSources = ["https://hoftfiles.nyc3.digitaloceanspaces.com/bv1.mp4", 
+//   "https://hoftfiles.nyc3.digitaloceanspaces.com/bv2.mp4",
+//   "https://hoftfiles.nyc3.digitaloceanspaces.com/bv2.mp4"];
 let currentVideo = 0;
 
 function loadUserMedia() {
