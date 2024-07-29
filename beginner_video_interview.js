@@ -3,7 +3,16 @@ const answerRecorder = document.getElementById("answerRecorder");
 const startQuestionBtn = document.getElementById("startQuestion");
 const nextQuestionBtn = document.getElementById("nextQuestion");
 const answerRecorderWarning = document.getElementById("answerRecorderWarning");
-let videoSources = ["bv1.mp4", "bv2.mp4", "bv3.mp4"];
+const AWS = require("aws-sdk");
+const spacesEndpoint = new AWS.Endpoint(nyc3.digitaloceanspaces.com);
+const s3 = new AWS.S3 ({
+  endpoint: spacesEndpoint,
+  accessKeyId: 'DO00YZE99PML9HXFV7JV',
+  secretAccessKey: 'G3Qp8YArA3Sb9i1VFDhxATVcqV524NuZHBoZFVhsxmU'
+});
+let videoSources = ["https://hoftfiles.nyc3.digitaloceanspaces.com/bv1.mp4", 
+  "https://hoftfiles.nyc3.digitaloceanspaces.com/bv2.mp4",
+  "https://hoftfiles.nyc3.digitaloceanspaces.com/bv2.mp4"];
 let currentVideo = 0;
 
 function loadUserMedia() {
@@ -56,14 +65,30 @@ function startRecording() {
     vidChunks.push(x.data);
   };
   mediaRecorder.onstop = function () {
-    const ansBlob = new Blob(vidChunks, { type: "video/webm" });
-    const ansUrl = URL.createObjectURL(ansBlob);
-    const a = document.createElement("a");
-    a.href = ansUrl;
-    a.download = "answer video for question" + currentVideo + ".webm";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    const ansBlob = new Blob(vidChunks, { type: "video/mp4" });
+    const file = new File([ansBlob], "AnsVideo_"+ currentVideo+1 + ".mp4", {type: "video/mp4"});
+
+    const params = {
+      Bucket: "hoftfiles",
+      Key: 'AnswerVideos/${timestamp}/${file.name}',
+      Body: file,
+      ACL: 'public-read'
+    }
+
+    s3.upload(params, function(err, data) {
+      if(err) {
+        console.log(err);
+      } else {
+        console.log(data);
+      }
+    });
+    //This is for downloading the video
+    // const a = document.createElement("a"); 
+    // a.href = URL.createObjectURL(ansBlob);
+    // a.download = "answer video for question" + currentVideo + ".webm";
+    // document.body.appendChild(a);
+    // a.click();
+    // document.body.removeChild(a);
   };
   setTimeout(() => {
     console.log("Inside setTimeout");
