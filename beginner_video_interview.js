@@ -82,7 +82,7 @@ function startRecording() {
     const ansBlob = new Blob(vidChunks, { type: "video/mp4" });
     const fileName = `AnsVideo_${currentVideo+1}.mp4`
     const file = new File([ansBlob],fileName, {type: "video/mp4"});
-    console.log('File name: ${file.name');
+    console.log(`File name: ${file.name}`);
     const timestamp = new Date().toISOString(); // Example timestamp
 
     const params = {
