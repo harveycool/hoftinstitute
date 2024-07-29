@@ -80,13 +80,14 @@ function startRecording() {
   };
   mediaRecorder.onstop = function () {
     const ansBlob = new Blob(vidChunks, { type: "video/mp4" });
-    const file = new File([ansBlob], "AnsVideo_"+ currentVideo+1 + ".mp4", {type: "video/mp4"});
-    console.log("file");
+    const fileName = `AnsVideo_${currentVideo+1}.mp4`
+    const file = new File([ansBlob],fileName, {type: "video/mp4"});
+    console.log('File name: ${file.name');
     const timestamp = new Date().toISOString(); // Example timestamp
 
     const params = {
       Bucket: "hoftfiles",
-      Key: 'AnswerVideos/${timestamp}/${file.name}',
+      Key: `AnswerVideos/${timestamp}/${file.name}`,
       Body: file,
       ACL: 'public-read'
     }
