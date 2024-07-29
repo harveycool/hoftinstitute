@@ -27,10 +27,6 @@ return s3.getSignedUrl('getObject', params);
 });
 
 console.log(videoSources);
-
-// let videoSources = ["https://hoftfiles.nyc3.digitaloceanspaces.com/bv1.mp4", 
-//   "https://hoftfiles.nyc3.digitaloceanspaces.com/bv2.mp4",
-//   "https://hoftfiles.nyc3.digitaloceanspaces.com/bv2.mp4"];
 let currentVideo = 0;
 
 function loadUserMedia() {
@@ -85,6 +81,8 @@ function startRecording() {
   mediaRecorder.onstop = function () {
     const ansBlob = new Blob(vidChunks, { type: "video/mp4" });
     const file = new File([ansBlob], "AnsVideo_"+ currentVideo+1 + ".mp4", {type: "video/mp4"});
+    console.log("file");
+    const timestamp = new Date().toISOString(); // Example timestamp
 
     const params = {
       Bucket: "hoftfiles",
