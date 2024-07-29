@@ -8,7 +8,7 @@ AWS.config.update({
   accessKeyId: 'DO00YZE99PML9HXFV7JV',
   secretAccessKey: 'G3Qp8YArA3Sb9i1VFDhxATVcqV524NuZHBoZFVhsxmU'
 });
-const spacesEndpoint = new AWS.Endpoint(nyc3.digitaloceanspaces.com);
+const spacesEndpoint = new AWS.Endpoint('nyc3.digitaloceanspaces.com');
 const s3 = new AWS.S3 ({
   endpoint: spacesEndpoint,
 });
