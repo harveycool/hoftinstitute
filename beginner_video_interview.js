@@ -3,13 +3,16 @@ const answerRecorder = document.getElementById("answerRecorder");
 const startQuestionBtn = document.getElementById("startQuestion");
 const nextQuestionBtn = document.getElementById("nextQuestion");
 const answerRecorderWarning = document.getElementById("answerRecorderWarning");
-const AWS = require("aws-sdk");
-const spacesEndpoint = new AWS.Endpoint(nyc3.digitaloceanspaces.com);
-const s3 = new AWS.S3 ({
-  endpoint: spacesEndpoint,
+
+AWS.config.update({
   accessKeyId: 'DO00YZE99PML9HXFV7JV',
   secretAccessKey: 'G3Qp8YArA3Sb9i1VFDhxATVcqV524NuZHBoZFVhsxmU'
 });
+const spacesEndpoint = new AWS.Endpoint(nyc3.digitaloceanspaces.com);
+const s3 = new AWS.S3 ({
+  endpoint: spacesEndpoint,
+});
+
 let videoSources = ["https://hoftfiles.nyc3.digitaloceanspaces.com/bv1.mp4", 
   "https://hoftfiles.nyc3.digitaloceanspaces.com/bv2.mp4",
   "https://hoftfiles.nyc3.digitaloceanspaces.com/bv2.mp4"];
