@@ -16,7 +16,6 @@ const s3 = new AWS.S3 ({
 const videoKeys = [
   'bv1.mp4',
   'bv2.mp4',
-  'bv2.mp4'
 ];
 
 const videoSources = videoKeys.map(key =>{const params ={
