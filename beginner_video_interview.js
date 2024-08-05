@@ -28,8 +28,7 @@ const videoSources = videoKeys.map((key) => {
     Key: key,
     Expires: 60 * 10,
   };
-  const signedUrl = s3.getSignedUrl("getObject", params);
-  console.log(signedUrl);
+  return s3.getSignedUrl("getObject", params);
 });
 
 console.log(videoSources);
