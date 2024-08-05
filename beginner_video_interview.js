@@ -17,6 +17,7 @@ AWS.config.update({
 const spacesEndpoint = new AWS.Endpoint("nyc3.digitaloceanspaces.com");
 const s3 = new AWS.S3({
   endpoint: spacesEndpoint,
+  s3ForcePathStyle: true,
 });
 
 const videoKeys = ["bv1.mp4", "bv2.mp4"];
@@ -27,7 +28,8 @@ const videoSources = videoKeys.map((key) => {
     Key: key,
     Expires: 60 * 10,
   };
-  return s3.getSignedUrl("getObject", params);
+  const signedUrl = s3.getSignedUrl("getObject", params);
+  console.log(signedUrl);
 });
 
 console.log(videoSources);
