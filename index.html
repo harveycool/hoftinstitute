@@ -15,7 +15,7 @@
         instructors.
       </p>
 
-      <form action="beginner interview.html" method="post">
+      <form action="beginner_video_interview.html" method="post">
         <div class="label_and_checkbox">
           <label for="first_name">First Name:</label>
           <div class="checkbox_group">
@@ -66,13 +66,43 @@
       const submitButton = document.querySelector('button[type="submit"]');
       submitButton.addEventListener("click", function (event) {
         event.preventDefault(); // Prevent the form from submitting
-        window.location.href = "beginner interview.html";
-      });
 
-      const skipButton = document.querySelector('button[type="skip"]');
-      skipButton.addEventListener("click", function (event) {
+        // Get the form data
+        const formData = new FormData(event.target.form);
+
+        // Get the form values
+        let firstName = formData.get("first_name");
+        const lastName = formData.get("last_name");
+        const phoneNumber = formData.get("phone_number");
+        const email = formData.get("email");
+        const oneNameChecked = formData.get("one_name");
+
+        // Validate the form fields
+        if (oneNameChecked === "on") {
+          if (!lastName || !phoneNumber || !email) {
+            alert("Please fill out all fields");
+            return;
+          }
+          firstName = "FNU";
+        } else {
+          if (!firstName || !lastName || !phoneNumber || !email) {
+            alert("Please fill out all fields");
+            return;
+          }
+        }
+        console.log("Set session storage: ", firstName, lastName);
+        // Store the first and last name in the session storage
+        sessionStorage.setItem("firstName", firstName);
+        sessionStorage.setItem("lastName", lastName);
+
+        // Redirect to the next page
         window.location.href = "beginner_video_interview.html";
       });
+
+      // const skipButton = document.querySelector('button[type="skip"]');
+      // skipButton.addEventListener("click", function (event) {
+      //   window.location.href = "beginner_video_interview.html";
+      // });
     </script>
   </body>
 </html>

@@ -3,27 +3,31 @@ const answerRecorder = document.getElementById("answerRecorder");
 const startQuestionBtn = document.getElementById("startQuestion");
 const nextQuestionBtn = document.getElementById("nextQuestion");
 const answerRecorderWarning = document.getElementById("answerRecorderWarning");
+const firstName = sessionStorage.getItem("firstName");
+const lastName = sessionStorage.getItem("lastName");
+console.log("Got from session storage: ", firstName, lastName);
+const uploadProgress = document.getElementById("uploadProgress");
+
+uploadProgress.style.display = "none";
 
 AWS.config.update({
-  accessKeyId: 'DO00YZE99PML9HXFV7JV',
-  secretAccessKey: 'G3Qp8YArA3Sb9i1VFDhxATVcqV524NuZHBoZFVhsxmU'
+  accessKeyId: "DO00YZE99PML9HXFV7JV",
+  secretAccessKey: "G3Qp8YArA3Sb9i1VFDhxATVcqV524NuZHBoZFVhsxmU",
 });
-const spacesEndpoint = new AWS.Endpoint('nyc3.digitaloceanspaces.com');
-const s3 = new AWS.S3 ({
+const spacesEndpoint = new AWS.Endpoint("nyc3.digitaloceanspaces.com");
+const s3 = new AWS.S3({
   endpoint: spacesEndpoint,
 });
 
-const videoKeys = [
-  'bv1.mp4',
-  'bv2.mp4',
-];
+const videoKeys = ["bv1.mp4", "bv2.mp4"];
 
-const videoSources = videoKeys.map(key =>{const params ={
-  Bucket: 'hoftfiles',
-  Key: key,
-  Expires: 60*10
-};
-return s3.getSignedUrl('getObject', params);
+const videoSources = videoKeys.map((key) => {
+  const params = {
+    Bucket: "hoftfiles",
+    Key: key,
+    Expires: 60 * 10,
+  };
+  return s3.getSignedUrl("getObject", params);
 });
 
 console.log(videoSources);
@@ -80,27 +84,51 @@ function startRecording() {
   };
   mediaRecorder.onstop = function () {
     const ansBlob = new Blob(vidChunks, { type: "video/mp4" });
-    const fileName = `AnsVideo_${currentVideo+1}.mp4`
-    const file = new File([ansBlob],fileName, {type: "video/mp4"});
+    const fileName = `AnsVideo_${firstName}_${lastName}.mp4`;
+    const file = new File([ansBlob], fileName, { type: "video/mp4" });
     console.log(`File name: ${file.name}`);
     const timestamp = new Date().toISOString(); // Example timestamp
 
     const params = {
       Bucket: "hoftfiles",
-      Key: `AnswerVideos/${timestamp}/${file.name}`,
+      Key: `AnswerVideos/${firstName}_${lastName}${timestamp}/${file.name}`,
       Body: file,
-      ACL: 'public-read'
-    }
+      ACL: "public-read",
+    };
+    const upload = new AWS.S3.ManagedUpload({
+      params: params,
+    });
 
-    s3.upload(params, function(err, data) {
-      if(err) {
+    upload.on("httpUploadProgress", function (evt) {
+      console.log("Upload Progress: ", evt.loaded, "/", evt.total);
+      uploadProgress.style.display = "block";
+      // You can calculate the percentage and update a progress bar or similar
+      const percentage = Math.round((evt.loaded / evt.total) * 100);
+      // Assuming you have a progress element with id 'uploadProgress'
+      document.getElementById("uploadProgress").style.width = `${percentage}%`;
+    });
+
+    upload.send(function (err, data) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(data);
+        // Enable the next question button when the upload is successful
+        nextQuestionBtn.disabled = false;
+      }
+    });
+    s3.upload(params, function (err, data) {
+      if (err) {
         console.log(err);
       } else {
         console.log(data);
       }
     });
+
+    console.log(`${firstName}_${lastName}`);
+    console.log(`${fileName.name}`);
     //This is for downloading the video
-    // const a = document.createElement("a"); 
+    // const a = document.createElement("a");
     // a.href = URL.createObjectURL(ansBlob);
     // a.download = "answer video for question" + currentVideo + ".webm";
     // document.body.appendChild(a);

@@ -61,6 +61,10 @@
     <div id="countdownQuestion"></div>
     <div id="countdownAnswer"></div>
     <button id="startQuestion" class="button">Start question</button>
+    <label for="uploadProgress"
+      >Answer Video Upload Progress: <span id="progressLabel">0%</span></label
+    >
+    <progress id="uploadProgress" value="0" max="100"></progress>
     <button id="nextQuestion" class="button" disabled>Next question</button>
 
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.814.0.min.js"></script>
