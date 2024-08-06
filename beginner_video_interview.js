@@ -81,7 +81,7 @@ function startRecording() {
     const fileName = `AnsVideo_${currentVideo + 1}.mp4`;
     const file = new File([ansBlob], fileName, { type: "video/mp4" });
     console.log(`File name: ${file.name}`);
-    const timestamp = new Date().toISOString(); // Example timestamp
+    const timestamp = new Date().toLocaleString(); // Example timestamp
 
     const params = {
       Bucket: "hoftfiles",
