@@ -12,12 +12,12 @@ uploadProgress.style.display = "none";
 
 // AWS SDK Configuration
 AWS.config.update({
-  accessKeyId: "DO00YZE99PML9HXFV7JV",
-  secretAccessKey: "G3Qp8YArA3Sb9i1VFDhxATVcqV524NuZHBoZFVhsxmU",
+  accessKeyId: "DO00JV9GL7CYLW8G8E3D",
+  secretAccessKey: "A+h2NgptkKly2VYNZxz7sRX/bfTWDDQkl1MWVMzwTFU",
 });
-const spacesEndpoint = new AWS.Endpoint("nyc3.digitaloceanspaces.com");
+//const spacesEndpoint = new AWS.Endpoint("nyc3.digitaloceanspaces.com");
 const s3 = new AWS.S3({
-  endpoint: spacesEndpoint,
+  endpoint: new AWS.Endpoint("nyc3.digitaloceanspaces.com"),
   s3ForcePathStyle: true, // This ensures the requests go to the correct endpoint
 });
 
@@ -29,13 +29,14 @@ const videoSources = videoKeys.map((key) => {
     Key: key,
     Expires: 60 * 10, // 10 minutes expiration
   };
-  return s3.getSignedUrl("getObject", params);
+  const url = s3.getSignedUrl("getObject", params);
+  console.log(`Generated URL for ${key}: ${url}`); // Log each generated URL
+  return url;
 });
 
 console.log("Generated Video Sources: ", videoSources); // Check the generated URLs
 let currentVideo = 0;
 
-// Function to Load User Media
 function loadUserMedia() {
   navigator.mediaDevices
     .getUserMedia({ video: true, audio: true })
@@ -64,34 +65,10 @@ function loadUserMedia() {
   questionVideo.src = videoSources[currentVideo];
 }
 
-// Event Listeners
 startQuestionBtn.addEventListener("click", function () {
   questionVideo.play();
 });
 
-questionVideo.addEventListener("ended", function () {
-  nextQuestionBtn.disabled = false;
-  questionVideo.pause();
-  answerRecorderWarning.textContent = "The recording will start in 5 seconds.";
-  startQuestionBtn.disabled = true;
-  startRecording();
-});
-
-nextQuestionBtn.addEventListener("click", function () {
-  currentVideo++;
-  if (currentVideo < videoSources.length) {
-    document.getElementById("questionVideo").src = videoSources[currentVideo];
-    startQuestionBtn.disabled = false;
-  } else {
-    questionVideo.pause();
-    answerRecorderWarning.textContent =
-      "All questions completed. Thank you for participating.";
-    nextQuestionBtn.disabled = true;
-  }
-  questionVideo.load();
-});
-
-// Function to Start Recording (included from your original code)
 function startRecording() {
   let vidChunks = [];
   console.log("Recording started");
@@ -129,7 +106,9 @@ function startRecording() {
     upload.on("httpUploadProgress", function (evt) {
       console.log("Upload Progress: ", evt.loaded, "/", evt.total);
       uploadProgress.style.display = "block";
+      // You can calculate the percentage and update a progress bar or similar
       const percentage = Math.round((evt.loaded / evt.total) * 100);
+      // Assuming you have a progress element with id 'uploadProgress'
       document.getElementById("uploadProgress").style.width = `${percentage}%`;
     });
 
@@ -138,6 +117,7 @@ function startRecording() {
         console.log(err);
       } else {
         console.log(data);
+        // Enable the next question button when the upload is successful
         nextQuestionBtn.disabled = false;
       }
     });
@@ -151,6 +131,39 @@ function startRecording() {
     console.log("After setTimeout");
   }, 5000);
 }
+
+questionVideo.addEventListener("ended", function () {
+  nextQuestionBtn.disabled = false;
+  questionVideo.pause();
+  answerRecorderWarning.textContent = "The recording will start in 5 seconds.";
+  startQuestionBtn.disabled = true;
+  startRecording();
+});
+
+nextQuestionBtn.addEventListener("click", function () {
+  console.log("Next question button clicked");
+  currentVideo++;
+  if (currentVideo < videoSources.length) {
+    document.getElementById("questionVideo").src = videoSources[currentVideo];
+    startQuestionBtn.disabled = false;
+  } else {
+    console.log("All questions completed");
+    questionVideo.pause();
+    answerRecorderWarning.textContent =
+      "All questions completed. Thank you for participating.";
+    nextQuestionBtn.disabled = true;
+  }
+  //document.getElementById("questionVideo").src = "bv2.mp4";
+  questionVideo.load();
+  //   if (questionVideo.getAttribute("src") === "bv2.mp4") {
+  //     console.log("Second video URL changed");
+  //   } else {
+  //     console.log("Second video URL not changed");
+  //   }
+  //   console.log(questionVideo); // Should log the video element
+  //   questionVideo.src = "bv2.mp4";
+  //   console.log(questionVideo.src); // Should log the new src
+});
 
 loadUserMedia();
 
