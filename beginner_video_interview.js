@@ -6,17 +6,17 @@ const answerRecorderWarning = document.getElementById("answerRecorderWarning");
 var bufferProgress = document.getElementById("uploadProgressBar");
 let startBtnPressed = false;
 
-//Progress Bar code is not working. Fix later
-const uploadProgressBar = document.getElementById("uploadProgressBar");
-const progressPercentageLabel = document.getElementById(
-  "progressPercentageLabel"
-);
-const progressBarLabel = document.querySelector(
-  `label[for='${uploadProgressBar.id}']`
-);
-uploadProgressBar.style.display = "none";
-progressPercentageLabel.style.display = "none";
-progressBarLabel.style.display = "none";
+// //Progress Bar code is not working. Fix later
+// const uploadProgressBar = document.getElementById("uploadProgressBar");
+// const progressPercentageLabel = document.getElementById(
+//   "progressPercentageLabel"
+// );
+// const progressBarLabel = document.querySelector(
+//   `label[for='${uploadProgressBar.id}']
+// );
+// uploadProgressBar.style.display = "none";
+// progressPercentageLabel.style.display = "none";
+// progressBarLabel.style.display = "none";
 
 AWS.config.update({
   accessKeyId: "DO00JV9GL7CYLW8G8E3D",
