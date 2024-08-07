@@ -73,9 +73,7 @@ function loadUserMedia() {
 
 startQuestionBtn.addEventListener("click", function () {
   startBtnPressed = true;
-  questionVideo.muted = true;
-  questionVideo.load();
-  startQuestionBtn.disabled = true;
+  questionVideo.play();
   answerRecorderWarning.textContent = `Video is loading and it will start playing automactically when it is ready`;
 });
 
@@ -83,9 +81,9 @@ questionVideo.addEventListener("error", function (event) {
   console.error("Video error: ", event);
 });
 
-questionVideo.addEventListener("canPlayThrough", function () {
-  questionVideo.play();
-});
+// questionVideo.addEventListener("canPlayThrough", function () {
+//   questionVideo.play();
+// });
 
 // questionVideo.addEventListener("loadedmetadata", function () {
 //   var bufferChecker = setInterval(function () {
