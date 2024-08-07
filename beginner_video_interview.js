@@ -4,6 +4,12 @@ const startQuestionBtn = document.getElementById("startQuestion");
 const nextQuestionBtn = document.getElementById("nextQuestion");
 const answerRecorderWarning = document.getElementById("answerRecorderWarning");
 
+//Getting all the personal data from the main page
+const firstName = sessionStorage.getItem("firstName");
+const lastName = sessionStorage.getItem("lastName");
+const email = sessionStorage.getItem("email");
+const phone = sessionStorage.getItem("phone");
+
 // //Progress Bar code is not working. Fix later
 // const uploadProgressBar = document.getElementById("uploadProgressBar");
 // const progressPercentageLabel = document.getElementById(
@@ -122,16 +128,21 @@ function startRecording() {
     vidChunks.push(x.data);
   };
   mediaRecorder.onstop = function () {
+    let date = new Date();
+    let hours = date.getHours();
+    let minutes = ("0" + date.getMinutes()).slice(-2); // Ensures two digits
+    let seconds = ("0" + date.getSeconds()).slice(-2); // Ensures two digits
+    const timestamp = `${hours}:${minutes}:${seconds}`;
+    console.log(timestamp); // Outputs: "hh:mm:ss"
     const ansBlob = new Blob(vidChunks, { type: "video/mp4" });
-    const fileName = `AnsVideo_${currentVideo + 1}.mp4`;
+    const fileName = `Answer_${currentVideo + 1}_${timestamp}.mp4`;
     const file = new File([ansBlob], fileName, { type: "video/mp4" });
     console.log(`File name: ${file.name}`);
-    const timestamp = new Date().toLocaleString().replace(/\//g, ".");
-    console.log(timestamp); // Example timestamp
+    const dateStamp = new Date().toLocaleDateString().replace(/\//g, ".");
 
     const params = {
       Bucket: "hoftfiles",
-      Key: `AnswerVideos/${timestamp}/${file.name}`,
+      Key: `AnswerVideos/${lastName}_${firstName}_${phone}_${email}/${dateStamp}/${file.name}`,
       Body: file,
       ACL: "public-read",
     };
