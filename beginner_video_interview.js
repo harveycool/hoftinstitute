@@ -81,9 +81,9 @@ questionVideo.addEventListener("error", function (event) {
   console.error("Video error: ", event);
 });
 
-// questionVideo.addEventListener("canPlayThrough", function () {
-//   questionVideo.play();
-// });
+questionVideo.addEventListener("canPlayThrough", function () {
+  questionVideo.play();
+});
 
 // questionVideo.addEventListener("loadedmetadata", function () {
 //   var bufferChecker = setInterval(function () {
