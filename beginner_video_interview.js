@@ -4,17 +4,17 @@ const startQuestionBtn = document.getElementById("startQuestion");
 const nextQuestionBtn = document.getElementById("nextQuestion");
 const answerRecorderWarning = document.getElementById("answerRecorderWarning");
 
-//Progress Bar code is not working. Fix later
-const uploadProgressBar = document.getElementById("uploadProgressBar");
-const progressPercentageLabel = document.getElementById(
-  "progressPercentageLabel"
-);
-const progressBarLabel = document.querySelector(
-  `label[for='${uploadProgressBar.id}']`
-);
-uploadProgressBar.style.display = "none";
-progressPercentageLabel.style.display = "none";
-progressBarLabel.style.display = "none";
+// //Progress Bar code is not working. Fix later
+// const uploadProgressBar = document.getElementById("uploadProgressBar");
+// const progressPercentageLabel = document.getElementById(
+//   "progressPercentageLabel"
+// );
+// const progressBarLabel = document.querySelector(
+//   `label[for='${uploadProgressBar.id}']`
+// );
+// uploadProgressBar.style.display = "none";
+// progressPercentageLabel.style.display = "none";
+// progressBarLabel.style.display = "none";
 
 AWS.config.update({
   accessKeyId: "DO00JV9GL7CYLW8G8E3D",
@@ -126,7 +126,8 @@ function startRecording() {
     const fileName = `AnsVideo_${currentVideo + 1}.mp4`;
     const file = new File([ansBlob], fileName, { type: "video/mp4" });
     console.log(`File name: ${file.name}`);
-    const timestamp = new Date().toLocaleString(); // Example timestamp
+    const timestamp = new Date().toLocaleString().replace(/\//g, ".");
+    console.log(timestamp); // Example timestamp
 
     const params = {
       Bucket: "hoftfiles",
@@ -134,25 +135,27 @@ function startRecording() {
       Body: file,
       ACL: "public-read",
     };
-    const uploadProgress = new AWS.S3.ManagedUpload({
-      params: params,
-    });
-    uploadProgress.on("httpUploadProgress", function (evt) {
-      const uploadPercentage = Math.round((evt.loaded / evt.total) * 100);
-      uploadProgressBar.style.display = "block";
-      uploadProgressBar.style.width = `${uploadPercentage}%`;
-      progressPercentageLabel.style.display = "block";
-      progressBarLabel.style.display = "block";
-    });
-    uploadProgress.send(function (err, data) {
-      if (err) {
-        console.log(err);
-      } else {
-        uploadProgressBar.style.display = "none";
-        progressPercentageLabel.style.display = "none";
-        progressBarLabel.style.display = "none";
-      }
-    });
+    console.log(params.Key);
+    // const uploadProgress = new AWS.S3.ManagedUpload({
+    //   params: params,
+    // });
+    // uploadProgress.on("httpUploadProgress", function (evt) {
+    //   const uploadPercentage = Math.round((evt.loaded / evt.total) * 100);
+    //   uploadProgressBar.style.display = "block";
+    //   uploadProgressBar.style.width = `${uploadPercentage}%`;
+    //   progressPercentageLabel.style.display = "block";
+    //   progressBarLabel.style.display = "block";
+    // });
+    // uploadProgress.send(function (err, data) {
+    //   if (err) {
+    //     console.log(err);
+    //   } else {
+    //     uploadProgressBar.style.display = "none";
+    //     progressPercentageLabel.style.display = "none";
+    //     progressBarLabel.style.display = "none";
+    //   }
+    // });
+
     s3.upload(params, function (err, data) {
       if (err) {
         console.log(err);
