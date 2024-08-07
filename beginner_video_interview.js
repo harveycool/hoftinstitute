@@ -6,17 +6,17 @@ const answerRecorderWarning = document.getElementById("answerRecorderWarning");
 var bufferProgress = document.getElementById("uploadProgressBar");
 let startBtnPressed = false;
 
-// Progress Bar code is not working. Fix later
-// const uploadProgressBar = document.getElementById("uploadProgressBar");
-// const progressPercentageLabel = document.getElementById(
-//   "progressPercentageLabel"
-// );
-// const progressBarLabel = document.querySelector(
-//   `label[for='${uploadProgressBar.id}']`
-// );
-// uploadProgressBar.style.display = "none";
-// progressPercentageLabel.style.display = "none";
-// progressBarLabel.style.display = "none";
+//Progress Bar code is not working. Fix later
+const uploadProgressBar = document.getElementById("uploadProgressBar");
+const progressPercentageLabel = document.getElementById(
+  "progressPercentageLabel"
+);
+const progressBarLabel = document.querySelector(
+  `label[for='${uploadProgressBar.id}']`
+);
+uploadProgressBar.style.display = "none";
+progressPercentageLabel.style.display = "none";
+progressBarLabel.style.display = "none";
 
 AWS.config.update({
   accessKeyId: "DO00JV9GL7CYLW8G8E3D",
@@ -81,29 +81,29 @@ questionVideo.addEventListener("error", function (event) {
   console.error("Video error: ", event);
 });
 
-questionVideo.addEventListener("canPlayThrough", function () {
-  questionVideo.play();
-});
-
-// questionVideo.addEventListener("loadedmetadata", function () {
-//   var bufferChecker = setInterval(function () {
-//     if (questionVideo.buffered.length === 0) {
-//       console.log("Video is not buffering");
-//       return;
-//     }
-
-//     var bufferedSeconds =
-//       questionVideo.buffered.end(0) - questionVideo.buffered.start(0);
-//     var progress = (bufferedSeconds / questionVideo.duration) * 100;
-//     bufferProgress.value = progress;
-//     if (bufferedSeconds >= questionVideo.duration) {
-//       clearInterval(bufferChecker);
-//       questionVideo.muted = false;
-//       questionVideo.play();
-//     }
-//     console.log("Buffered seconds: ", bufferedSeconds);
-//   }, 500);
+// questionVideo.addEventListener("canPlayThrough", function () {
+//   questionVideo.play();
 // });
+
+questionVideo.addEventListener("loadedmetadata", function () {
+  var bufferChecker = setInterval(function () {
+    if (questionVideo.buffered.length === 0) {
+      console.log("Video is not buffering");
+      return;
+    }
+
+    var bufferedSeconds =
+      questionVideo.buffered.end(0) - questionVideo.buffered.start(0);
+    var progress = (bufferedSeconds / questionVideo.duration) * 100;
+    bufferProgress.value = progress;
+    if (bufferedSeconds >= questionVideo.duration) {
+      clearInterval(bufferChecker);
+      questionVideo.muted = false;
+      questionVideo.play();
+    }
+    console.log("Buffered seconds: ", bufferedSeconds);
+  }, 500);
+});
 
 questionVideo.addEventListener(
   "waiting",
