@@ -17,35 +17,35 @@
 
       <form action="beginner_video_interview.html" method="post">
         <div class="label_and_checkbox">
-          <label for="first_name">First Name:</label>
+          <label for="firstName">First Name:</label>
           <div class="checkbox_group">
-            <input type="checkbox" id="one_name" name="one_name" />
-            <label for="one_name">I only have one name</label>
+            <input type="checkbox" id="oneName" name="oneName" />
+            <label for="oneName">I only have one name</label>
           </div>
         </div>
 
         <div>
           <input
             type="text"
-            id="first_name"
-            name="first_name"
+            id="firstName"
+            name="firstName"
             required
             placeholder="If you don't have a first name, please check the box above"
           />
         </div>
 
         <div>
-          <label for="last_name">Last Name:</label>
+          <label for="lastName">Last Name:</label>
         </div>
-        <input type="text" id="last_name" name="last_name" required />
+        <input type="text" id="lastName" name="lastName" required />
         <div>
-          <label for="phone_number">Phone Number:</label>
+          <label for="phoneNumber">Phone Number:</label>
         </div>
         <div>
           <input
             type="tel"
-            id="phone_number"
-            name="phone_number"
+            id="phoneNumber"
+            name="phoneNumber"
             placeholder="Country Code - Area Code - Number"
           />
         </div>
@@ -71,11 +71,11 @@
         const formData = new FormData(event.target.form);
 
         // Get the form values
-        let firstName = formData.get("first_name");
-        const lastName = formData.get("last_name");
-        const phoneNumber = formData.get("phone_number");
+        let firstName = formData.get("firstName");
+        const lastName = formData.get("lastName");
+        const phoneNumber = formData.get("phoneNumber");
         const email = formData.get("email");
-        const oneNameChecked = formData.get("one_name");
+        const oneNameChecked = formData.get("oneName");
 
         // Validate the form fields
         if (oneNameChecked === "on") {

@@ -8,7 +8,7 @@ const answerRecorderWarning = document.getElementById("answerRecorderWarning");
 const firstName = sessionStorage.getItem("firstName");
 const lastName = sessionStorage.getItem("lastName");
 const email = sessionStorage.getItem("email");
-const phone = sessionStorage.getItem("phone");
+const phone = sessionStorage.getItem("phoneNumber");
 
 // //Progress Bar code is not working. Fix later
 // const uploadProgressBar = document.getElementById("uploadProgressBar");
