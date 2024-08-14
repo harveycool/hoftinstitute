@@ -11,18 +11,14 @@
     <h1 id="questionHeader"></h1>
     <video id="questionVideo" class="questionVideo" src=""></video>
     <h2 id="answerRecorderWarning"></h2>
+    <div id="answerCountdown"></div>
     <video id="answerRecorder"></video>
     <div id="countdownQuestion"></div>
     <div id="countdownAnswer"></div>
     <button id="startQuestion" class="button">Start question</button>
-    <label for="uploadProgressBar"
-      >Answer Video Upload Progress:
-      <span id="progressPercentageLabel">0%</span></label
-    >
-    <progress id="uploadProgressBar" value="0" max="100"></progress>
     <button id="nextQuestion" class="button" disabled>Next question</button>
 
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.814.0.min.js"></script>
-    <script src="beginner_video_interview.js"></script>
+    <script src="beginner-video-interview.js"></script>
   </body>
 </html>

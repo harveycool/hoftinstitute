@@ -98,3 +98,8 @@ img {
 .checkbox_group label {
   margin-left: 10px;
 }
+button:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+}
