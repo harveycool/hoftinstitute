@@ -38,14 +38,14 @@ const videoKeys = [
 ``;
 const answerDuration = {
   "aqv1.MOV": 6,
-  "aqv2.MOV": 11,
-  "aqv3.MOV": 6,
-  "aqv4.MOV": 6,
-  "aqv5.MOV": 16,
-  "aqv6.MOV": 16,
-  "aqv7.MOV": 11,
-  "aqv8.MOV": 16,
-  "aqv9.MOV": 16,
+  "aqv2.MOV": 31,
+  "aqv3.MOV": 31,
+  "aqv4.MOV": 16,
+  "aqv5.MOV": 31,
+  "aqv6.MOV": 31,
+  "aqv7.MOV": 31,
+  "aqv8.MOV": 31,
+  "aqv9.MOV": 61,
   "endofInterview.MOV": 0,
 };
 
