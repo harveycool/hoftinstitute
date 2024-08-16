@@ -3,24 +3,13 @@ const answerRecorder = document.getElementById("answerRecorder");
 const startQuestionBtn = document.getElementById("startQuestion");
 const nextQuestionBtn = document.getElementById("nextQuestion");
 const answerRecorderWarning = document.getElementById("answerRecorderWarning");
+const questionHeader = document.getElementById("questionHeader");
 
 //Getting all the personal data from the main page
 const firstName = sessionStorage.getItem("firstName");
 const lastName = sessionStorage.getItem("lastName");
 const email = sessionStorage.getItem("email");
 const phone = sessionStorage.getItem("phoneNumber");
-
-// //Progress Bar code is not working. Fix later
-// const uploadProgressBar = document.getElementById("uploadProgressBar");
-// const progressPercentageLabel = document.getElementById(
-//   "progressPercentageLabel"
-// );
-// const progressBarLabel = document.querySelector(
-//   `label[for='${uploadProgressBar.id}']`
-// );
-// uploadProgressBar.style.display = "none";
-// progressPercentageLabel.style.display = "none";
-// progressBarLabel.style.display = "none";
 
 AWS.config.update({
   accessKeyId: "DO00JV9GL7CYLW8G8E3D",
@@ -51,19 +40,19 @@ const videoKeys = [
 ];
 ``;
 const answerDuration = {
-  "bqv1.MOV": 5,
-  "bqv2.MOV": 10,
-  "bqv3.MOV": 5,
-  "bqv4.MOV": 5,
-  "bqv5.MOV": 15,
-  "bqv6.MOV": 15,
-  "bqv7.MOV": 10,
-  "bqv8.MOV": 15,
-  "bqv9.MOV": 15,
-  "bqv10.MOV": 10,
-  "bqv12.MOV": 30,
-  "bqv13.MOV": 30,
-  "bqv14.MOV": 30,
+  "bqv1.MOV": 6,
+  "bqv2.MOV": 11,
+  "bqv3.MOV": 6,
+  "bqv4.MOV": 6,
+  "bqv5.MOV": 16,
+  "bqv6.MOV": 16,
+  "bqv7.MOV": 11,
+  "bqv8.MOV": 16,
+  "bqv9.MOV": 16,
+  "bqv10.MOV": 11,
+  "bqv12.MOV": 31,
+  "bqv13.MOV": 31,
+  "bqv14.MOV": 31,
   "endofInterview.MOV": 0,
 };
 
@@ -73,11 +62,25 @@ const videoSources = videoKeys.map((key) => {
     Key: `questionVideos/beginnerQuestionVideos/${key}`,
     Expires: 60 * 30,
   };
+  // Check if the current key is "endofInterview.MOV"
+  if (key === "endofInterview.MOV") {
+    // Disable the buttons
+    startQuestionBtn.disabled = true;
+    nextQuestionBtn.disabled = true;
+
+    // Play the video automatically when it's loaded
+    questionVideo.autoplay = true;
+
+    // Update the "answerRecorderWarning" text
+    answerRecorderWarning.textContent =
+      "You may leave this page now. Your interview has been successfully uploaded.";
+  }
+
   return s3.getSignedUrl("getObject", params);
 });
 
 console.log(videoSources);
-let currentVideo = 0;
+let currentVideo = 13;
 
 function loadUserMedia() {
   navigator.mediaDevices
@@ -105,27 +108,12 @@ function loadUserMedia() {
     });
   nextQuestionBtn.disabled = true;
   questionVideo.src = videoSources[currentVideo];
+  questionHeader.textContent = `Question ${currentVideo + 1} of ${
+    videoKeys.length
+  }`;
   questionVideo.load();
 }
-// Add this to your JavaScript file
-function startAnswerCountdown(timeInSeconds) {
-  var countdownElement = document.getElementById("answerCountdown");
-  var countdown = timeInSeconds;
 
-  // Update the countdown every second
-  var intervalId = setInterval(function () {
-    countdown--;
-    countdownElement.innerText = countdown + " seconds remaining";
-
-    if (countdown <= 0) {
-      clearInterval(intervalId);
-      countdownElement.innerText = "Time's up!";
-    }
-  }, 1000);
-}
-
-// Call this function when the answer recorder starts, for example:
-// startAnswerCountdown(60); // 60 seconds countdown
 startQuestionBtn.addEventListener("click", function () {
   questionVideo.play();
   startQuestionBtn.disabled = true;
@@ -148,6 +136,14 @@ questionVideo.addEventListener(
   },
   false
 );
+
+function endofInterview() {
+  startQuestionBtn.disabled = true;
+  nextQuestionBtn.disabled = true;
+  answerRecorderWarning.textContent =
+    "You may leave this page now. Your interview has been successfully uploaded.";
+}
+
 function startRecording() {
   let vidChunks = [];
   console.log("Recording started");
@@ -192,25 +188,6 @@ function startRecording() {
       ACL: "public-read",
     };
     console.log(params.Key);
-    // const uploadProgress = new AWS.S3.ManagedUpload({
-    //   params: params,
-    // });
-    // uploadProgress.on("httpUploadProgress", function (evt) {
-    //   const uploadPercentage = Math.round((evt.loaded / evt.total) * 100);
-    //   uploadProgressBar.style.display = "block";
-    //   uploadProgressBar.style.width = `${uploadPercentage}%`;
-    //   progressPercentageLabel.style.display = "block";
-    //   progressBarLabel.style.display = "block";
-    // });
-    // uploadProgress.send(function (err, data) {
-    //   if (err) {
-    //     console.log(err);
-    //   } else {
-    //     uploadProgressBar.style.display = "none";
-    //     progressPercentageLabel.style.display = "none";
-    //     progressBarLabel.style.display = "none";
-    //   }
-    // });
     s3.upload(params, function (err, data) {
       if (err) {
         console.log(err);
@@ -233,10 +210,13 @@ function startRecording() {
 questionVideo.addEventListener("ended", function () {
   nextQuestionBtn.disabled = false;
   questionVideo.pause();
-  answerRecorderWarning.textContent = "The recording will start in 5 seconds.";
-  startQuestionBtn.disabled = true;
-  nextQuestionBtn.disabled = false;
-  startRecording();
+  if (currentVideo === 13) {
+    endofInterview();
+  } else {
+    startQuestionBtn.disabled = true;
+    nextQuestionBtn.disabled = false;
+    startRecording();
+  }
 });
 
 nextQuestionBtn.addEventListener("click", function () {
@@ -255,8 +235,20 @@ nextQuestionBtn.addEventListener("click", function () {
       "All questions completed. Thank you for participating.";
     nextQuestionBtn.disabled = true;
   }
-
+  questionHeader.textContent = `Question ${currentVideo + 1} of ${
+    videoKeys.length
+  }`;
   questionVideo.load();
 });
 
+questionVideo.addEventListener("loadedmetadata", function () {
+  if (currentVideo === 13) {
+    startQuestionBtn.disabled = true;
+    nextQuestionBtn.disabled = true;
+
+    questionVideo.play();
+    answerRecorderWarning.textContent =
+      "You may leave this page now. Your interview has been successfully uploaded.";
+  }
+});
 loadUserMedia();
