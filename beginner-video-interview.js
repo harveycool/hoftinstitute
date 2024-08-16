@@ -4,6 +4,7 @@ const startQuestionBtn = document.getElementById("startQuestion");
 const nextQuestionBtn = document.getElementById("nextQuestion");
 const answerRecorderWarning = document.getElementById("answerRecorderWarning");
 const questionHeader = document.getElementById("questionHeader");
+const extraContent = document.getElementById("extraContent");
 
 //Getting all the personal data from the main page
 const firstName = sessionStorage.getItem("firstName");
@@ -50,7 +51,7 @@ const answerDuration = {
   "bqv8.MOV": 16,
   "bqv9.MOV": 16,
   "bqv10.MOV": 11,
-  "bqv12.MOV": 31,
+  "bqv12.MOV": 3,
   "bqv13.MOV": 31,
   "bqv14.MOV": 31,
   "endofInterview.MOV": 0,
@@ -80,7 +81,7 @@ const videoSources = videoKeys.map((key) => {
 });
 
 console.log(videoSources);
-let currentVideo = 13;
+let currentVideo = 10;
 
 function loadUserMedia() {
   navigator.mediaDevices
@@ -249,6 +250,14 @@ questionVideo.addEventListener("loadedmetadata", function () {
     questionVideo.play();
     answerRecorderWarning.textContent =
       "You may leave this page now. Your interview has been successfully uploaded.";
+    extraContent.innerHTML = "";
+    extraContent.style.display = "none";
+  } else if (currentVideo === 10) {
+    extraContent.innerHTML =
+      '<img src="beginnerBoyPhoto.png" style="width: 40em;">';
+  } else if (currentVideo === 12) {
+    extraContent.innerHTML =
+      '<img src="beginnerText.png" style="width: 40em;">';
   }
 });
 loadUserMedia();
