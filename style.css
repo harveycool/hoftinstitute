@@ -74,7 +74,7 @@ input[type="email"]:focus,
   border-style: solid;
 }
 img {
-  width: 12em;
+  width: 3em;
   height: auto;
 }
 
@@ -98,6 +98,77 @@ img {
 .checkbox_group label {
   margin-left: 10px;
 }
+button:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+}
+/* Existing CSS */
+img {
+  width: 100%; /* Make the image responsive */
+  height: auto;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%; /* Make the container take up the full width */
+  max-width: 960px; /* Limit the maximum width */
+  margin: 0 auto; /* Center the container */
+  padding: 1em; /* Add some padding */
+}
+
+/* Media query for screens smaller than 600px */
+@media (max-width: 600px) {
+  .container {
+    padding: 0.5em; /* Reduce padding for smaller screens */
+  }
+
+  #extracontent img {
+    width: 100%;
+    display: block;
+    margin: auto;
+  }
+  #extracontent {
+    justify-content: center;
+    display: flex;
+  }
+
+  .label_and_checkbox,
+  .checkbox_group {
+    flex-direction: column; /* Stack the elements vertically */
+    align-items: flex-start; /* Align the elements to the start */
+  }
+
+  .label_and_checkbox label,
+  .checkbox_group label {
+    margin: 0.5em 0; /* Add some vertical margin */
+  }
+  #questionVideo,
+  #answerRecorder {
+    width: 100%; /* Full width of the container */
+    max-width: 20em; /* Max width for responsive design */
+    height: auto; /* Maintain aspect ratio */
+    margin-bottom: 0.5em; /* Space below the videos */
+    border-radius: 10px;
+    border-width: 1px;
+    border-color: gray;
+    border-style: solid;
+  }
+  .button {
+    padding: 0.5em 1em; /* Adjust padding */
+    background-color: blue;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: 10px; /* Rounded corners */
+    margin: 10px;
+    font-size: 1em;
+  }
+}
+
 button:disabled {
   background-color: #cccccc;
   color: #666666;

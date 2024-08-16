@@ -24,43 +24,39 @@ const s3 = new AWS.S3({
 });
 
 const videoKeys = [
-  "bqv1.MOV",
-  "bqv2.MOV",
-  "bqv3.MOV",
-  "bqv4.MOV",
-  "bqv5.MOV",
-  "bqv6.MOV",
-  "bqv7.MOV",
-  "bqv8.MOV",
-  "bqv9.MOV",
-  "bqv10.MOV",
-  "bqv12.MOV",
-  "bqv13.MOV",
-  "bqv14.MOV",
+  "iqv1.MOV",
+  "iqv2.MOV",
+  "iqv3.MOV",
+  "iqv4.MOV",
+  "iqv5.MOV",
+  "iqv6.MOV",
+  "iqv7.MOV",
+  "iqv8.MOV",
+  "iqv9.MOV",
+  "iqv10.MOV",
+  "iqv11.MOV",
   "endofInterview.MOV",
 ];
 ``;
 const answerDuration = {
-  "bqv1.MOV": 6,
-  "bqv2.MOV": 11,
-  "bqv3.MOV": 6,
-  "bqv4.MOV": 6,
-  "bqv5.MOV": 16,
-  "bqv6.MOV": 16,
-  "bqv7.MOV": 11,
-  "bqv8.MOV": 16,
-  "bqv9.MOV": 16,
-  "bqv10.MOV": 11,
-  "bqv12.MOV": 31,
-  "bqv13.MOV": 31,
-  "bqv14.MOV": 31,
+  "iqv1.MOV": 6,
+  "iqv2.MOV": 11,
+  "iqv3.MOV": 16,
+  "iqv4.MOV": 11,
+  "iqv5.MOV": 31,
+  "iqv6.MOV": 31,
+  "iqv7.MOV": 31,
+  "iqv8.MOV": 16,
+  "iqv9.MOV": 31,
+  "iqv10.MOV": 31,
+  "iqv11.MOV": 61,
   "endofInterview.MOV": 0,
 };
 
 const videoSources = videoKeys.map((key) => {
   const params = {
     Bucket: "hoftfiles",
-    Key: `questionVideos/beginnerQuestionVideos/${key}`,
+    Key: `questionVideos/intermediateQuestionVideos/${key}`,
     Expires: 60 * 30,
   };
   // Check if the current key is "endofInterview.MOV"
@@ -253,9 +249,11 @@ questionVideo.addEventListener("loadedmetadata", function () {
     extraContent.innerHTML = "";
     extraContent.style.display = "none";
   } else if (currentVideo === 10) {
-    extraContent.innerHTML = '<img src="beginnerBoyPhoto.png">';
+    extraContent.innerHTML =
+      '<img src="beginnerBoyPhoto.png" style="width: 40em;">';
   } else if (currentVideo === 12) {
-    extraContent.innerHTML = '<img src="beginnerText.png">';
+    extraContent.innerHTML =
+      '<img src="beginnerText.png" style="width: 40em;">';
   }
 });
 loadUserMedia();
