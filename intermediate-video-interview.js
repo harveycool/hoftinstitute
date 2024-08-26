@@ -153,7 +153,7 @@ function startRecording() {
       clearInterval(countdownInterval);
       mediaRecorder.stop();
       answerRecorderWarning.textContent = `Recording stopped. Answer video is being uploaded. 
-      Please do not leave this page until the upload is finsihed.`;
+      Please do not leave this page until the upload is finished.`;
     }
   }, 1000);
 

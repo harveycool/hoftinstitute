@@ -66,7 +66,7 @@ const videoSources = videoKeys.map((key) => {
 });
 
 console.log(videoSources);
-let currentVideo = 13;
+let currentVideo = 0;
 
 function loadUserMedia() {
   navigator.mediaDevices
@@ -158,7 +158,7 @@ function startRecording() {
       clearInterval(countdownInterval);
       mediaRecorder.stop();
       answerRecorderWarning.textContent = `Recording stopped. Answer video is being uploaded. 
-      Please do not leave this page until the upload is finsihed.`;
+      Please do not leave this page until the upload is finished.`;
     }
   }, 1000);
 
