@@ -8,12 +8,8 @@
   </head>
   <body>
     <div class="container">
-      <h2>HOFT ESL Student Interview</h2>
-
-      <p>
-        Please fill out the form below to schedule an interview with one of our
-        instructors.
-      </p>
+      <img src="HOFT_web1.png" alt="logo" class="logoimg" />
+      <h2 style="text-align: center">HOFT ESL Student Interview</h2>
 
       <form action="beginner_video_interview.html" method="post">
         <div class="label_and_checkbox">
@@ -39,25 +35,39 @@
         </div>
         <input type="text" id="lastName" name="lastName" required />
         <div>
-          <label for="phoneNumber">Phone Number:</label>
-        </div>
-        <div>
-          <input
-            type="tel"
-            id="phoneNumber"
-            name="phoneNumber"
-            placeholder="Country Code - Area Code - Number"
-          />
-        </div>
-        <div>
           <label for="email">Email:</label>
         </div>
         <div>
           <input type="email" id="email" name="email" required />
         </div>
+        <label
+          >Choose your level. You can find this information in the email we sent
+          with the exam link.</label
+        >
+        <div class="levelRadio-group">
+          <input type="radio" id="beginner" name="level" value="beginner" />
+          <label for="beginner">Beginner</label>
+
+          <input
+            type="radio"
+            id="intermediate"
+            name="level"
+            value="intermediate"
+          />
+          <label for="intermediate">Intermediate</label>
+
+          <input type="radio" id="advanced" name="level" value="advanced" />
+          <label for="advanced">Advanced</label>
+        </div>
+
         <div style="margin-top: 20px">
-          <button type="submit">Submit</button>
-          <button type="button" id="skip">Skip</button>
+          <button
+            type="submit"
+            class="button"
+            style="display: block; margin: auto"
+          >
+            Submit
+          </button>
         </div>
       </form>
     </div>
@@ -73,38 +83,51 @@
         // Get the form values
         let firstName = formData.get("firstName");
         const lastName = formData.get("lastName");
-        const phoneNumber = formData.get("phoneNumber");
         const email = formData.get("email");
         const oneNameChecked = formData.get("oneName");
+        const level = formData.get("level");
+
+        function submitForm() {
+          console.log("Set session storage: ", firstName, lastName);
+          // Store the first and last name in the session storage
+          sessionStorage.setItem("firstName", firstName);
+          sessionStorage.setItem("lastName", lastName);
+          sessionStorage.setItem("email", email);
+
+          let redirectUrl;
+          switch (level) {
+            case "beginner":
+              redirectUrl = "beginner-video-interview.html";
+              break;
+            case "intermediate":
+              redirectUrl = "intermediate-video-interview.html";
+              break;
+            case "advanced":
+              redirectUrl = "advanced-video-interview.html";
+              break;
+          }
+          // Redirect to the next page
+          window.location.href = redirectUrl;
+        }
 
         // Validate the form fields
         if (oneNameChecked === "on") {
-          if (!lastName || !phoneNumber || !email) {
-            alert("Please fill out all fields");
+          if (!lastName || !email || !level) {
+            alert("Please fill out all fields and select a level");
             return;
+          } else {
+            firstName = "FNU";
+            submitForm();
           }
-          firstName = "FNU";
         } else {
-          if (!firstName || !lastName || !phoneNumber || !email) {
-            alert("Please fill out all fields");
+          if (!firstName || !lastName || !email || !level) {
+            alert("Please fill out all fields and select a level");
             return;
+          } else {
+            submitForm();
           }
         }
-        console.log("Set session storage: ", firstName, lastName);
-        // Store the first and last name in the session storage
-        sessionStorage.setItem("firstName", firstName);
-        sessionStorage.setItem("lastName", lastName);
-        sessionStorage.setItem("phoneNumber", phoneNumber);
-        sessionStorage.setItem("email", email);
-
-        // Redirect to the next page
-        window.location.href = "beginner_video_interview.html";
       });
-
-      // const skipButton = document.querySelector('button[type="skip"]');
-      // skipButton.addEventListener("click", function (event) {
-      //   window.location.href = "beginner_video_interview.html";
-      // });
     </script>
   </body>
 </html>

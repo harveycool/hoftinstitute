@@ -74,7 +74,11 @@ input[type="email"]:focus,
   border-style: solid;
 }
 img {
-  width: 3em;
+  width: 0.5em;
+  height: auto;
+}
+.logoimg {
+  width: 10em;
   height: auto;
 }
 
@@ -119,10 +123,33 @@ img {
   padding: 1em; /* Add some padding */
 }
 
+button:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+}
+.levelRadio-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1em;
+}
+.levelRadio-group input[type="radio"] {
+  position: relative;
+  top: -5px;
+}
+
 /* Media query for screens smaller than 600px */
+
 @media (max-width: 600px) {
   .container {
     padding: 0.5em; /* Reduce padding for smaller screens */
+    width: 80%;
+    max-width: 600px; /* or any other suitable value */
+    margin: 0 auto; /* center the container if the screen is wider than max-width */
+  }
+
+  form {
+    margin: auto;
   }
 
   #extracontent img {
@@ -148,7 +175,7 @@ img {
   #questionVideo,
   #answerRecorder {
     width: 100%; /* Full width of the container */
-    max-width: 20em; /* Max width for responsive design */
+    max-width: 15em; /* Max width for responsive design */
     height: auto; /* Maintain aspect ratio */
     margin-bottom: 0.5em; /* Space below the videos */
     border-radius: 10px;
@@ -167,10 +194,9 @@ img {
     margin: 10px;
     font-size: 1em;
   }
-}
-
-button:disabled {
-  background-color: #cccccc;
-  color: #666666;
-  cursor: not-allowed;
+  #answerRecorderWarning{
+    word-wrap: break-word;
+    overflow-wrap: break-word
+    word-break: break-word;
+  }
 }

@@ -10,7 +10,6 @@ const extraContent = document.getElementById("extraContent");
 const firstName = sessionStorage.getItem("firstName");
 const lastName = sessionStorage.getItem("lastName");
 const email = sessionStorage.getItem("email");
-const phone = sessionStorage.getItem("phoneNumber");
 
 AWS.config.update({
   accessKeyId: "DO00JV9GL7CYLW8G8E3D",
@@ -63,25 +62,11 @@ const videoSources = videoKeys.map((key) => {
     Key: `questionVideos/beginnerQuestionVideos/${key}`,
     Expires: 60 * 30,
   };
-  // Check if the current key is "endofInterview.MOV"
-  if (key === "endofInterview.MOV") {
-    // Disable the buttons
-    startQuestionBtn.disabled = true;
-    nextQuestionBtn.disabled = true;
-
-    // Play the video automatically when it's loaded
-    questionVideo.autoplay = true;
-
-    // Update the "answerRecorderWarning" text
-    answerRecorderWarning.textContent =
-      "You may leave this page now. Your interview has been successfully uploaded.";
-  }
-
   return s3.getSignedUrl("getObject", params);
 });
 
 console.log(videoSources);
-let currentVideo = 10;
+let currentVideo = 13;
 
 function loadUserMedia() {
   navigator.mediaDevices
@@ -113,6 +98,16 @@ function loadUserMedia() {
     videoKeys.length
   }`;
   questionVideo.load();
+  if (videoSources === "endofInterview.MOV") {
+    // Disable the buttons
+    startQuestionBtn.disabled = true;
+    nextQuestionBtn.disabled = true;
+    questionVideo.autoplay = true;
+    answerRecorderWarning.textContent =
+      "You may leave this page now. Your interview has been successfully uploaded.";
+  } else {
+    questionVideo.autoplay = false;
+  }
 }
 
 startQuestionBtn.addEventListener("click", function () {
@@ -153,6 +148,7 @@ function startRecording() {
   const mediaRecorder = new MediaRecorder(answerRecorder.srcObject);
   mediaRecorder.start();
   console.log("Recording really started", mediaRecorder.state);
+
   // This is the countdown timer for the duration of the recording. Change the number of seconds according to Blair
   let countdown = answerDuration[videoKeys[currentVideo]];
   const countdownInterval = setInterval(() => {
@@ -184,7 +180,7 @@ function startRecording() {
 
     const params = {
       Bucket: "hoftfiles",
-      Key: `AnswerVideos/${lastName}_${firstName}_${phone}_${email}/${dateStamp}/${file.name}`,
+      Key: `AnswerVideos/${lastName}_${firstName}_${email}/${dateStamp}/${file.name}`,
       Body: file,
       ACL: "public-read",
     };
@@ -199,12 +195,6 @@ function startRecording() {
       }
     });
   };
-
-  setTimeout(() => {
-    console.log("Inside setTimeout");
-    mediaRecorder.stop();
-    console.log("After setTimeout");
-  }, 10000);
   nextQuestionBtn.disabled = true;
 }
 
