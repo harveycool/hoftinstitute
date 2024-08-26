@@ -1,0 +1,43 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+#file-explorer {
+  width: 300px;
+  height: 600px;
+  border: 1px solid #ccc;
+  overflow-y: auto;
+}
+
+.file-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.file-list a {
+  display: block;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  text-decoration: none;
+  color: #333;
+}
+
+.file-list a:hover {
+  background-color: #f0f0f0;
+}
+
+#questionVideo {
+  width: 100%;
+  margin-top: 20px;
+}
+#container {
+  display: flex;
+}
+
+#questionVideo {
+  flex: 1;
+}
+
+#file-explorer {
+  flex: 1;
+}

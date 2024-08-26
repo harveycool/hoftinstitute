@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Video List</title>
-    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.814.0.min.js"></script>
+    <title>File Explorer</title>
+    <link rel="stylesheet" type="text/css" href="video-player.css" />
   </head>
   <body>
-    <h1>Available Videos</h1>
+    <div id="container">
+      <div id="file-explorer">
+        <h1>File Explorer</h1>
+        <div id="videoList" class="file-list"></div>
+      </div>
+      <video id="questionVideo" controls></video>
+    </div>
 
-    <video id="questionVideo" controls></video>
-
-    <ul id="videoList">
-      <!-- Links to videos will be appended here by the JavaScript -->
-    </ul>
-
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.813.0.min.js"></script>
     <script src="video-player.js"></script>
   </body>
 </html>

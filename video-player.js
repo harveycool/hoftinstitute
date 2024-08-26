@@ -7,6 +7,7 @@ const spacesEndpoint = new AWS.Endpoint("nyc3.digitaloceanspaces.com");
 
 const s3 = new AWS.S3({
   endpoint: spacesEndpoint,
+  s3ForcePathStyle: true,
 });
 
 const params = {
