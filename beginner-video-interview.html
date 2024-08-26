@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Beginner Interview</title>
+  </head>
+  <body>
+    <img src="HOFT_web1.png" alt="logo" class="logoimg" />
+    <h1 id="questionHeader"></h1>
+    <video id="questionVideo" playsinline class="questionVideo" src=""></video>
+    <div id="extraContent"></div>
+    <h2 id="answerRecorderWarning"></h2>
+    <div id="answerCountdown"></div>
+    <video id="answerRecorder" playsinline></video>
+    <div id="countdownQuestion"></div>
+    <div id="countdownAnswer"></div>
+    <button id="startQuestion" class="button">Start question</button>
+    <button id="nextQuestion" class="button" disabled>Next question</button>
+
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.814.0.min.js"></script>
+    <script src="beginner-video-interview.js"></script>
+  </body>
+</html>
