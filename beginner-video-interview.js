@@ -113,7 +113,7 @@ function loadUserMedia() {
 startQuestionBtn.addEventListener("click", function () {
   questionVideo.play();
   startQuestionBtn.disabled = true;
-  answerRecorderWarning.textContent = `Video is loading and it will start playing automactically when it is ready`;
+  answerRecorderWarning.textContent = `Video is loading and it will start playing automatically when it is ready`;
 });
 
 questionVideo.addEventListener("error", function (event) {

@@ -58,7 +58,7 @@ const videoSources = videoKeys.map((key) => {
 });
 
 console.log(videoSources);
-let currentVideo = 0;
+let currentVideo = 8;
 
 function loadUserMedia() {
   navigator.mediaDevices
@@ -105,7 +105,7 @@ function loadUserMedia() {
 startQuestionBtn.addEventListener("click", function () {
   questionVideo.play();
   startQuestionBtn.disabled = true;
-  answerRecorderWarning.textContent = `Video is loading and it will start playing automactically when it is ready`;
+  answerRecorderWarning.textContent = `Video is loading and it will start playing automatically when it is ready`;
 });
 
 questionVideo.addEventListener("error", function (event) {
@@ -192,7 +192,7 @@ function startRecording() {
 questionVideo.addEventListener("ended", function () {
   nextQuestionBtn.disabled = false;
   questionVideo.pause();
-  if (currentVideo === 13) {
+  if (currentVideo === 9) {
     endofInterview();
   } else {
     startQuestionBtn.disabled = true;
@@ -224,7 +224,7 @@ nextQuestionBtn.addEventListener("click", function () {
 });
 
 questionVideo.addEventListener("loadedmetadata", function () {
-  if (currentVideo === 13) {
+  if (currentVideo === 9) {
     startQuestionBtn.disabled = true;
     nextQuestionBtn.disabled = true;
 
@@ -233,10 +233,8 @@ questionVideo.addEventListener("loadedmetadata", function () {
       "You may leave this page now. Your interview has been successfully uploaded.";
     extraContent.innerHTML = "";
     extraContent.style.display = "none";
-  } else if (currentVideo === 10) {
-    extraContent.innerHTML = '<img src="beginnerBoyPhoto.png">';
-  } else if (currentVideo === 12) {
-    extraContent.innerHTML = '<img src="beginnerText.png">';
+  } else if (currentVideo === 8) {
+    extraContent.innerHTML = '<img src="advancedStoryChoices.png">';
   }
 });
 loadUserMedia();
