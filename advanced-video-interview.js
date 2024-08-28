@@ -246,6 +246,7 @@ questionVideo.addEventListener("loadedmetadata", function () {
     extraContent.innerHTML = "";
     extraContent.style.display = "none";
   } else if (currentVideo === 8) {
+    extraContent.style.display = "block";
     extraContent.innerHTML = '<img src="advancedStoryChoices.png">';
   } else {
     extraContent.style.display = "none";

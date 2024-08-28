@@ -253,10 +253,13 @@ questionVideo.addEventListener("loadedmetadata", function () {
     extraContent.innerHTML = "";
     extraContent.style.display = "none";
   } else if (currentVideo === 4) {
+    extraContent.style.display = "block";
     extraContent.innerHTML = '<img src="intermediateBoyPhoto.png">';
   } else if (currentVideo === 5) {
+    extraContent.style.display = "block";
     extraContent.innerHTML = '<img src="intermediateBoyPhoto.png">';
   } else if (currentVideo === 10) {
+    extraContent.style.display = "block";
     extraContent.innerHTML = '<img src="advancedStoryChoices.png">';
   } else {
     extraContent.style.display = "none";
