@@ -169,32 +169,32 @@ function videoUpload() {
 }
 let vidChunks = [];
 let countdownInterval;
+
 function startRecording() {
   mediaRecorder.ondataavailable = function (x) {
     vidChunks.push(x.data);
     console.log("Recording started");
-    answerRecorderWarning.textContent =
-      "Recording started. Please answer the question.";
-    mediaRecorder.start();
-    console.log("Recording really started", mediaRecorder.state);
-    // This is the countdown timer for the duration of the recording. Change the number of seconds according to Blair
-    let countdown = answerDuration[videoKeys[currentVideo]];
-    countdownInterval = setInterval(() => {
-      countdown--;
-      answerRecorderWarning.textContent = `Recording ${countdown} seconds left.`;
-      if (countdown === 0) {
-        clearInterval(countdownInterval);
-        mediaRecorder.stop();
-        answerRecorderWarning.textContent = `Recording stopped. Answer video is being uploaded. 
+  };
+  answerRecorderWarning.textContent =
+    "Recording started. Please answer the question.";
+  mediaRecorder.start();
+  console.log("Recording really started", mediaRecorder.state);
+  // This is the countdown timer for the duration of the recording. Change the number of seconds according to Blair
+  let countdown = answerDuration[videoKeys[currentVideo]];
+  countdownInterval = setInterval(() => {
+    countdown--;
+    answerRecorderWarning.textContent = `Recording ${countdown} seconds left.`;
+    if (countdown === 0) {
+      clearInterval(countdownInterval);
+      mediaRecorder.stop();
+      answerRecorderWarning.textContent = `Recording stopped. Answer video is being uploaded. 
       Please do not leave this page until the upload is finished.`;
-        forceNextQuestionBtn.disabled = true;
-      }
-    }, 1000);
+      forceNextQuestionBtn.disabled = true;
+    }
+  }, 1000);
 
-    mediaRecorder.onstop = function () {
-      videoUpload();
-    };
-    nextQuestionBtn.disabled = true;
+  mediaRecorder.onstop = function () {
+    videoUpload();
   };
 
   nextQuestionBtn.disabled = true;
