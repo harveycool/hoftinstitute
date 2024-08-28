@@ -5,6 +5,8 @@ const nextQuestionBtn = document.getElementById("nextQuestion");
 const answerRecorderWarning = document.getElementById("answerRecorderWarning");
 const questionHeader = document.getElementById("questionHeader");
 const extraContent = document.getElementById("extraContent");
+const forceNextQuestionBtn = document.getElementById("forceNextQuestion");
+let mediaRecorder;
 
 //Getting all the personal data from the main page
 const firstName = sessionStorage.getItem("firstName");
@@ -66,6 +68,7 @@ function loadUserMedia() {
     .then(async function (stream) {
       answerRecorder.srcObject = stream;
       answerRecorder.muted = true;
+      mediaRecorder = new MediaRecorder(stream);
       answerRecorder
         .play()
         .then(() => {
@@ -131,61 +134,69 @@ function endofInterview() {
   answerRecorderWarning.textContent =
     "You may leave this page now. Your interview has been successfully uploaded.";
 }
+function videoUpload() {
+  console.log("Video upload started");
+  forceNextQuestionBtn.disabled = true;
 
-function startRecording() {
-  let vidChunks = [];
-  console.log("Recording started");
-  answerRecorderWarning.textContent =
-    "Recording started. Please answer the question.";
-  const mediaRecorder = new MediaRecorder(answerRecorder.srcObject);
-  mediaRecorder.start();
-  console.log("Recording really started", mediaRecorder.state);
-  // This is the countdown timer for the duration of the recording. Change the number of seconds according to Blair
-  let countdown = answerDuration[videoKeys[currentVideo]];
-  const countdownInterval = setInterval(() => {
-    countdown--;
-    answerRecorderWarning.textContent = `Recording ${countdown} seconds left.`;
-    if (countdown === 0) {
-      clearInterval(countdownInterval);
-      mediaRecorder.stop();
-      answerRecorderWarning.textContent = `Recording stopped. Answer video is being uploaded. 
-      Please do not leave this page until the upload is finished.`;
+  let date = new Date();
+  let hours = date.getHours();
+  let minutes = ("0" + date.getMinutes()).slice(-2); // Ensures two digits
+  let seconds = ("0" + date.getSeconds()).slice(-2); // Ensures two digits
+  const timestamp = `${hours}:${minutes}:${seconds}`;
+  console.log(timestamp); // Outputs: "hh:mm:ss"
+  const ansBlob = new Blob(vidChunks, { type: "video/mp4" });
+  const fileName = `Answer_${currentVideo + 1}_${timestamp}.mp4`;
+  const file = new File([ansBlob], fileName, { type: "video/mp4" });
+  console.log(`File name: ${file.name}`);
+  const dateStamp = new Date().toLocaleDateString().replace(/\//g, ".");
+
+  const params = {
+    Bucket: "hoftfiles",
+    Key: `AnswerVideos/${lastName}_${firstName}_${email}/${dateStamp}/${file.name}`,
+    Body: file,
+    ACL: "public-read",
+  };
+  console.log(params.Key);
+  s3.upload(params, function (err, data) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(data);
+      answerRecorderWarning.textContent = `Answer video uploaded successfully. Click on the 'Next Question' button to proceed.`;
+      nextQuestionBtn.disabled = false;
     }
-  }, 1000);
-
+  });
+}
+let vidChunks = [];
+let countdownInterval;
+function startRecording() {
   mediaRecorder.ondataavailable = function (x) {
     vidChunks.push(x.data);
-  };
-  mediaRecorder.onstop = function () {
-    let date = new Date();
-    let hours = date.getHours();
-    let minutes = ("0" + date.getMinutes()).slice(-2); // Ensures two digits
-    let seconds = ("0" + date.getSeconds()).slice(-2); // Ensures two digits
-    const timestamp = `${hours}:${minutes}:${seconds}`;
-    console.log(timestamp); // Outputs: "hh:mm:ss"
-    const ansBlob = new Blob(vidChunks, { type: "video/mp4" });
-    const fileName = `Answer_${currentVideo + 1}_${timestamp}.mp4`;
-    const file = new File([ansBlob], fileName, { type: "video/mp4" });
-    console.log(`File name: ${file.name}`);
-    const dateStamp = new Date().toLocaleDateString().replace(/\//g, ".");
-
-    const params = {
-      Bucket: "hoftfiles",
-      Key: `AnswerVideos/${lastName}_${firstName}_${email}/${dateStamp}/${file.name}`,
-      Body: file,
-      ACL: "public-read",
-    };
-    console.log(params.Key);
-    s3.upload(params, function (err, data) {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log(data);
-        answerRecorderWarning.textContent = `Answer video uploaded successfully. Click on the 'Next Question' button to proceed.`;
-        nextQuestionBtn.disabled = false;
+    console.log("Recording started");
+    answerRecorderWarning.textContent =
+      "Recording started. Please answer the question.";
+    mediaRecorder.start();
+    console.log("Recording really started", mediaRecorder.state);
+    // This is the countdown timer for the duration of the recording. Change the number of seconds according to Blair
+    let countdown = answerDuration[videoKeys[currentVideo]];
+    countdownInterval = setInterval(() => {
+      countdown--;
+      answerRecorderWarning.textContent = `Recording ${countdown} seconds left.`;
+      if (countdown === 0) {
+        clearInterval(countdownInterval);
+        mediaRecorder.stop();
+        answerRecorderWarning.textContent = `Recording stopped. Answer video is being uploaded. 
+      Please do not leave this page until the upload is finished.`;
+        forceNextQuestionBtn.disabled = true;
       }
-    });
+    }, 1000);
+
+    mediaRecorder.onstop = function () {
+      videoUpload();
+    };
+    nextQuestionBtn.disabled = true;
   };
+
   nextQuestionBtn.disabled = true;
 }
 
@@ -197,6 +208,7 @@ questionVideo.addEventListener("ended", function () {
   } else {
     startQuestionBtn.disabled = true;
     nextQuestionBtn.disabled = false;
+    forceNextQuestionBtn.disabled = false;
     startRecording();
   }
 });
@@ -235,6 +247,23 @@ questionVideo.addEventListener("loadedmetadata", function () {
     extraContent.style.display = "none";
   } else if (currentVideo === 8) {
     extraContent.innerHTML = '<img src="advancedStoryChoices.png">';
+  } else {
+    extraContent.style.display = "none";
+  }
+});
+
+forceNextQuestionBtn.addEventListener("click", function () {
+  console.log("Force next question button clicked");
+  forceNextQuestionBtn.disabled = true;
+
+  mediaRecorder.stop();
+  countdown = 0;
+  mediaRecorder.onstop = function () {
+    videoUpload();
+  };
+
+  if (countdownInterval) {
+    clearInterval(countdownInterval);
   }
 });
 loadUserMedia();

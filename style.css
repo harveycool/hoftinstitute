@@ -63,6 +63,20 @@ input[type="email"]:focus,
 .button:hover {
   background-color: darkblue;
 }
+#forceNextQuestion {
+  padding: 10px 20px; /* Adjust padding */
+  background-color: blue;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border-radius: 10px; /* Rounded corners */
+  margin: 10px;
+  font-size: 15px;
+}
+#forceNextQuestion:hover {
+  background-color: darkgoldenrod;
+}
 #questionVideo,
 #answerRecorder {
   width: 100%; /* Full width of the container */
@@ -102,6 +116,12 @@ img {
   margin-left: 10px;
 }
 button:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+}
+
+#forceNextQuestion:disabled {
   background-color: #cccccc;
   color: #666666;
   cursor: not-allowed;
@@ -191,6 +211,17 @@ button:disabled {
     border-style: solid;
   }
   .button {
+    padding: 0.5em 1em; /* Adjust padding */
+    background-color: blue;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: 10px; /* Rounded corners */
+    margin: 10px;
+    font-size: 1em;
+  }
+  #forceNextQuestion {
     padding: 0.5em 1em; /* Adjust padding */
     background-color: blue;
     color: #fff;

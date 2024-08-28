@@ -5,6 +5,8 @@ const nextQuestionBtn = document.getElementById("nextQuestion");
 const answerRecorderWarning = document.getElementById("answerRecorderWarning");
 const questionHeader = document.getElementById("questionHeader");
 const extraContent = document.getElementById("extraContent");
+const forceNextQuestionBtn = document.getElementById("forceNextQuestion");
+let mediaRecorder;
 
 //Getting all the personal data from the main page
 const firstName = sessionStorage.getItem("firstName");
@@ -62,7 +64,7 @@ const videoSources = videoKeys.map((key) => {
 });
 
 console.log(videoSources);
-let currentVideo = 11;
+let currentVideo = 4;
 
 function loadUserMedia() {
   navigator.mediaDevices
@@ -70,6 +72,7 @@ function loadUserMedia() {
     .then(async function (stream) {
       answerRecorder.srcObject = stream;
       answerRecorder.muted = true;
+      mediaRecorder = new MediaRecorder(stream);
       answerRecorder
         .play()
         .then(() => {
@@ -89,6 +92,7 @@ function loadUserMedia() {
         "Please refresh the page and allow the camera and microphone access.";
     });
   nextQuestionBtn.disabled = true;
+  forceNextQuestionBtn.disabled = true;
   questionVideo.src = videoSources[currentVideo];
   questionHeader.textContent = `Question ${currentVideo + 1} of ${
     videoKeys.length
@@ -109,6 +113,7 @@ function loadUserMedia() {
 startQuestionBtn.addEventListener("click", function () {
   questionVideo.play();
   startQuestionBtn.disabled = true;
+  forceNextQuestionBtn.disabled = true;
   answerRecorderWarning.textContent = `Video is loading and it will start playing automatically when it is ready`;
 });
 
@@ -135,18 +140,55 @@ function endofInterview() {
   answerRecorderWarning.textContent =
     "You may leave this page now. Your interview has been successfully uploaded.";
 }
+function videoUpload() {
+  console.log("Video upload started");
+  forceNextQuestionBtn.disabled = true;
+
+  let date = new Date();
+  let hours = date.getHours();
+  let minutes = ("0" + date.getMinutes()).slice(-2); // Ensures two digits
+  let seconds = ("0" + date.getSeconds()).slice(-2); // Ensures two digits
+  const timestamp = `${hours}:${minutes}:${seconds}`;
+  console.log(timestamp); // Outputs: "hh:mm:ss"
+  const ansBlob = new Blob(vidChunks, { type: "video/mp4" });
+  const fileName = `Answer_${currentVideo + 1}_${timestamp}.mp4`;
+  const file = new File([ansBlob], fileName, { type: "video/mp4" });
+  console.log(`File name: ${file.name}`);
+  const dateStamp = new Date().toLocaleDateString().replace(/\//g, ".");
+
+  const params = {
+    Bucket: "hoftfiles",
+    Key: `AnswerVideos/${lastName}_${firstName}_${email}/${dateStamp}/${file.name}`,
+    Body: file,
+    ACL: "public-read",
+  };
+  console.log(params.Key);
+  s3.upload(params, function (err, data) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(data);
+      answerRecorderWarning.textContent = `Answer video uploaded successfully. Click on the 'Next Question' button to proceed.`;
+      nextQuestionBtn.disabled = false;
+    }
+  });
+}
+
+let vidChunks = [];
+let countdownInterval;
 
 function startRecording() {
-  let vidChunks = [];
-  console.log("Recording started");
+  mediaRecorder.ondataavailable = function (x) {
+    vidChunks.push(x.data);
+    console.log("Recording started");
+  };
   answerRecorderWarning.textContent =
     "Recording started. Please answer the question.";
-  const mediaRecorder = new MediaRecorder(answerRecorder.srcObject);
   mediaRecorder.start();
   console.log("Recording really started", mediaRecorder.state);
   // This is the countdown timer for the duration of the recording. Change the number of seconds according to Blair
   let countdown = answerDuration[videoKeys[currentVideo]];
-  const countdownInterval = setInterval(() => {
+  countdownInterval = setInterval(() => {
     countdown--;
     answerRecorderWarning.textContent = `Recording ${countdown} seconds left.`;
     if (countdown === 0) {
@@ -154,42 +196,14 @@ function startRecording() {
       mediaRecorder.stop();
       answerRecorderWarning.textContent = `Recording stopped. Answer video is being uploaded. 
       Please do not leave this page until the upload is finished.`;
+      forceNextQuestionBtn.disabled = true;
     }
   }, 1000);
 
-  mediaRecorder.ondataavailable = function (x) {
-    vidChunks.push(x.data);
-  };
   mediaRecorder.onstop = function () {
-    let date = new Date();
-    let hours = date.getHours();
-    let minutes = ("0" + date.getMinutes()).slice(-2); // Ensures two digits
-    let seconds = ("0" + date.getSeconds()).slice(-2); // Ensures two digits
-    const timestamp = `${hours}:${minutes}:${seconds}`;
-    console.log(timestamp); // Outputs: "hh:mm:ss"
-    const ansBlob = new Blob(vidChunks, { type: "video/mp4" });
-    const fileName = `Answer_${currentVideo + 1}_${timestamp}.mp4`;
-    const file = new File([ansBlob], fileName, { type: "video/mp4" });
-    console.log(`File name: ${file.name}`);
-    const dateStamp = new Date().toLocaleDateString().replace(/\//g, ".");
-
-    const params = {
-      Bucket: "hoftfiles",
-      Key: `AnswerVideos/${lastName}_${firstName}_${email}/${dateStamp}/${file.name}`,
-      Body: file,
-      ACL: "public-read",
-    };
-    console.log(params.Key);
-    s3.upload(params, function (err, data) {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log(data);
-        answerRecorderWarning.textContent = `Answer video uploaded successfully. Click on the 'Next Question' button to proceed.`;
-        nextQuestionBtn.disabled = false;
-      }
-    });
+    videoUpload();
   };
+
   nextQuestionBtn.disabled = true;
 }
 
@@ -201,6 +215,7 @@ questionVideo.addEventListener("ended", function () {
   } else {
     startQuestionBtn.disabled = true;
     nextQuestionBtn.disabled = false;
+    forceNextQuestionBtn.disabled = false;
     startRecording();
   }
 });
@@ -238,13 +253,28 @@ questionVideo.addEventListener("loadedmetadata", function () {
     extraContent.innerHTML = "";
     extraContent.style.display = "none";
   } else if (currentVideo === 4) {
-    extraContent.innerHTML =
-      '<img src="intermediateBoyPhoto.png" style="width: 40em;">';
+    extraContent.innerHTML = '<img src="intermediateBoyPhoto.png">';
   } else if (currentVideo === 5) {
-    extraContent.innerHTML =
-      '<img src="intermediateBoyPhoto.png" style="width: 40em;">';
+    extraContent.innerHTML = '<img src="intermediateBoyPhoto.png">';
   } else if (currentVideo === 10) {
     extraContent.innerHTML = '<img src="advancedStoryChoices.png">';
+  } else {
+    extraContent.style.display = "none";
+  }
+});
+
+forceNextQuestionBtn.addEventListener("click", function () {
+  console.log("Force next question button clicked");
+  forceNextQuestionBtn.disabled = true;
+
+  mediaRecorder.stop();
+  countdown = 0;
+  mediaRecorder.onstop = function () {
+    videoUpload();
+  };
+
+  if (countdownInterval) {
+    clearInterval(countdownInterval);
   }
 });
 loadUserMedia();
