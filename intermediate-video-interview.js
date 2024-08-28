@@ -64,7 +64,7 @@ const videoSources = videoKeys.map((key) => {
 });
 
 console.log(videoSources);
-let currentVideo = 4;
+let currentVideo = 0;
 
 function loadUserMedia() {
   navigator.mediaDevices
@@ -151,7 +151,7 @@ function videoUpload() {
   const timestamp = `${hours}:${minutes}:${seconds}`;
   console.log(timestamp); // Outputs: "hh:mm:ss"
   const ansBlob = new Blob(vidChunks, { type: "video/mp4" });
-  const fileName = `Answer_${currentVideo + 1}_${timestamp}.mp4`;
+  const fileName = `Answer_${currentVideo + 1}_${timestamp}_Intermediate.mp4`;
   const file = new File([ansBlob], fileName, { type: "video/mp4" });
   console.log(`File name: ${file.name}`);
   const dateStamp = new Date().toLocaleDateString().replace(/\//g, ".");
