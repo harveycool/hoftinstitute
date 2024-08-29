@@ -25,7 +25,7 @@ const s3 = new AWS.S3({
 });
 
 const videoKeys = [
-  "aqv1.mp4",
+  "aqv1.MOV",
   "aqv2.MOV",
   "aqv3.MOV",
   "aqv4.MOV",
