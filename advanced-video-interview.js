@@ -25,7 +25,7 @@ const s3 = new AWS.S3({
 });
 
 const videoKeys = [
-  "aqv1.MOV",
+  "aqv1.mp4",
   "aqv2.MOV",
   "aqv3.MOV",
   "aqv4.MOV",
@@ -38,7 +38,7 @@ const videoKeys = [
 ];
 ``;
 const answerDuration = {
-  "aqv1.MOV": 6,
+  "aqv1.mp4": 6,
   "aqv2.MOV": 31,
   "aqv3.MOV": 31,
   "aqv4.MOV": 16,
