@@ -111,8 +111,28 @@ startQuestionBtn.addEventListener("click", function () {
   answerRecorderWarning.textContent = `Video is loading and it will start playing automatically when it is ready`;
 });
 
-questionVideo.addEventListener("error", function (event) {
-  console.error("Video error: ", event);
+questionVideo.addEventListener("error", function () {
+  switch (questionVideo.error.code) {
+    case questionVideo.error.MEDIA_ERR_ABORTED:
+      console.error("You aborted the video playback.");
+      break;
+    case questionVideo.error.MEDIA_ERR_NETWORK:
+      console.error("A network error caused the video download to fail.");
+      break;
+    case questionVideo.error.MEDIA_ERR_DECODE:
+      console.error(
+        "The video playback was aborted due to a corruption problem or because the video used features your browser did not support."
+      );
+      break;
+    case questionVideo.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
+      console.error(
+        "The video could not be loaded, either because the server or network failed or because the format is not supported."
+      );
+      break;
+    default:
+      console.error("An unknown error occurred.");
+      break;
+  }
 });
 
 questionVideo.addEventListener("canPlayThrough", function () {
