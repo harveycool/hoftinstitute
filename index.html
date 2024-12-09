@@ -12,62 +12,61 @@
       <h2 style="text-align: center">HOFT ESL Student Interview</h2>
 
       <form action="beginner_video_interview.html" method="post">
-        <div class="label_and_checkbox">
-          <label for="firstName">First Name:</label>
-          <div class="checkbox_group">
-            <input type="checkbox" id="oneName" name="oneName" />
-            <label for="oneName">I only have one name</label>
+        <div class="checkbox_group">
+          <input type="checkbox" id="oneName" name="oneName" />
+          <label for="oneName">I only have one name</label>
+        </div>
+        <div>
+          <div>
+            <label for="firstName">First Name:</label>
+            <input
+              type="text"
+              id="firstName"
+              name="firstName"
+              required
+              placeholder="If you don't have a first name, please check the box above"
+            />
           </div>
-        </div>
 
-        <div>
-          <input
-            type="text"
-            id="firstName"
-            name="firstName"
-            required
-            placeholder="If you don't have a first name, please check the box above"
-          />
-        </div>
-
-        <div>
-          <label for="lastName">Last Name:</label>
-        </div>
-        <input type="text" id="lastName" name="lastName" required />
-        <div>
-          <label for="email">Email:</label>
-        </div>
-        <div>
-          <input type="email" id="email" name="email" required />
-        </div>
-        <label
-          >Choose your level. You can find this information in the email we sent
-          with the exam link.</label
-        >
-        <div class="levelRadio-group">
-          <input type="radio" id="beginner" name="level" value="beginner" />
-          <label for="beginner">Beginner</label>
-
-          <input
-            type="radio"
-            id="intermediate"
-            name="level"
-            value="intermediate"
-          />
-          <label for="intermediate">Intermediate</label>
-
-          <input type="radio" id="advanced" name="level" value="advanced" />
-          <label for="advanced">Advanced</label>
-        </div>
-
-        <div style="margin-top: 20px">
-          <button
-            type="submit"
-            class="button"
-            style="display: block; margin: auto"
+          <div>
+            <label for="lastName">Last Name:</label>
+          </div>
+          <input type="text" id="lastName" name="lastName" required />
+          <div>
+            <label for="email">Email:</label>
+          </div>
+          <div>
+            <input type="email" id="email" name="email" required />
+          </div>
+          <label
+            >Choose your level. You can find this information in the email we
+            sent with the exam link.</label
           >
-            Submit
-          </button>
+          <div class="levelRadio-group">
+            <input type="radio" id="beginner" name="level" value="beginner" />
+            <label for="beginner">Beginner</label>
+
+            <input
+              type="radio"
+              id="intermediate"
+              name="level"
+              value="intermediate"
+            />
+            <label for="intermediate">Intermediate</label>
+
+            <input type="radio" id="advanced" name="level" value="advanced" />
+            <label for="advanced">Advanced</label>
+          </div>
+
+          <div style="margin-top: 20px">
+            <button
+              type="submit"
+              class="button"
+              style="display: block; margin: auto"
+            >
+              Submit
+            </button>
+          </div>
         </div>
       </form>
     </div>

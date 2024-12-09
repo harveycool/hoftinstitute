@@ -27,6 +27,7 @@ form {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 label {
   display: block;
@@ -62,6 +63,20 @@ input[type="email"]:focus,
 .button:hover {
   background-color: darkblue;
 }
+#forceNextQuestion {
+  padding: 10px 20px; /* Adjust padding */
+  background-color: blue;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border-radius: 10px; /* Rounded corners */
+  margin: 10px;
+  font-size: 15px;
+}
+#forceNextQuestion:hover {
+  background-color: darkgoldenrod;
+}
 #questionVideo,
 #answerRecorder {
   width: 100%; /* Full width of the container */
@@ -82,17 +97,15 @@ img {
   height: auto;
 }
 
-.label_and_checkbox {
+.checkbox_group {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-right: 10px;
 }
 .checkbox_group {
   display: flex;
   align-items: center;
-}
-.label_and_checkbox label {
-  margin-right: 10px;
 }
 .container {
   display: flex;
@@ -103,6 +116,12 @@ img {
   margin-left: 10px;
 }
 button:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+}
+
+#forceNextQuestion:disabled {
   background-color: #cccccc;
   color: #666666;
   cursor: not-allowed;
@@ -138,6 +157,17 @@ button:disabled {
   top: -5px;
 }
 
+.checkbox_group {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: 1em;
+}
+.checkbox_group input[type="checkbox"] {
+  position: relative;
+  top: -3px;
+}
+
 /* Media query for screens smaller than 600px */
 
 @media (max-width: 600px) {
@@ -149,7 +179,15 @@ button:disabled {
   }
 
   form {
-    margin: auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+  }
+  .checkbox_group {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 1em;
   }
 
   #extracontent img {
@@ -160,17 +198,6 @@ button:disabled {
   #extracontent {
     justify-content: center;
     display: flex;
-  }
-
-  .label_and_checkbox,
-  .checkbox_group {
-    flex-direction: column; /* Stack the elements vertically */
-    align-items: flex-start; /* Align the elements to the start */
-  }
-
-  .label_and_checkbox label,
-  .checkbox_group label {
-    margin: 0.5em 0; /* Add some vertical margin */
   }
   #questionVideo,
   #answerRecorder {
@@ -194,9 +221,20 @@ button:disabled {
     margin: 10px;
     font-size: 1em;
   }
-  #answerRecorderWarning{
+  #forceNextQuestion {
+    padding: 0.5em 1em; /* Adjust padding */
+    background-color: blue;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: 10px; /* Rounded corners */
+    margin: 10px;
+    font-size: 1em;
+  }
+  #answerRecorderWarning {
     word-wrap: break-word;
-    overflow-wrap: break-word
+    overflow-wrap: break-word;
     word-break: break-word;
   }
 }
