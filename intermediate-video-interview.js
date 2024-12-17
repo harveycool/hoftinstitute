@@ -170,6 +170,8 @@ function videoUpload() {
       console.log(data);
       answerRecorderWarning.textContent = `Answer video uploaded successfully. Click on the 'Next Question' button to proceed.`;
       nextQuestionBtn.disabled = false;
+
+      vidChunks = [];
     }
   });
 }
