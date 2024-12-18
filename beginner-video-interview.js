@@ -64,7 +64,7 @@ const videoSources = videoKeys.map((key) => {
 });
 
 console.log(videoSources);
-let currentVideo = 0;
+let currentVideo = 8;
 
 function loadUserMedia() {
   navigator.mediaDevices
@@ -254,10 +254,9 @@ questionVideo.addEventListener("loadedmetadata", function () {
       "You may leave this page now. Your interview has been successfully uploaded.";
     extraContent.innerHTML = "";
     extraContent.style.display = "none";
-  } else if (currentVideo === 10) {
+  } else if (currentVideo === 8) {
     extraContent.innerHTML = '<img src="beginnerBoyPhoto.png">';
-  } else if (currentVideo === 12) {
-    d;
+  } else if (currentVideo === 10) {
     extraContent.innerHTML = '<img src="beginnerText.png">';
   }
 });

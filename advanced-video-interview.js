@@ -25,11 +25,9 @@ const s3 = new AWS.S3({
 });
 
 const videoKeys = [
-  "aqv1.MOV",
   "aqv2.MOV",
   "aqv3.MOV",
   "aqv4.MOV",
-  "aqv5.MOV",
   "aqv6.MOV",
   "aqv7.MOV",
   "aqv8.MOV",
@@ -60,7 +58,7 @@ const videoSources = videoKeys.map((key) => {
 });
 
 console.log(videoSources);
-let currentVideo = 0;
+let currentVideo = 6;
 
 function loadUserMedia() {
   navigator.mediaDevices
@@ -267,7 +265,7 @@ questionVideo.addEventListener("loadedmetadata", function () {
       "You may leave this page now. Your interview has been successfully uploaded.";
     extraContent.innerHTML = "";
     extraContent.style.display = "none";
-  } else if (currentVideo === 8) {
+  } else if (currentVideo === 6) {
     extraContent.style.display = "block";
     extraContent.innerHTML = '<img src="advancedStoryChoices.png">';
   } else {

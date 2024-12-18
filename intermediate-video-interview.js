@@ -25,14 +25,11 @@ const s3 = new AWS.S3({
 });
 
 const videoKeys = [
-  "iqv1.MOV",
-  "iqv2.MOV",
   "iqv3.MOV",
   "iqv4.MOV",
   "iqv5.MOV",
   "iqv6.MOV",
   "iqv7.MOV",
-  "iqv8.MOV",
   "iqv9.MOV",
   "iqv10.MOV",
   "iqv11.MOV",
@@ -40,14 +37,11 @@ const videoKeys = [
 ];
 ``;
 const answerDuration = {
-  "iqv1.MOV": 6,
-  "iqv2.MOV": 11,
   "iqv3.MOV": 16,
   "iqv4.MOV": 11,
   "iqv5.MOV": 31,
   "iqv6.MOV": 31,
   "iqv7.MOV": 31,
-  "iqv8.MOV": 16,
   "iqv9.MOV": 11,
   "iqv10.MOV": 11,
   "iqv11.MOV": 61,
@@ -254,13 +248,13 @@ questionVideo.addEventListener("loadedmetadata", function () {
       "You may leave this page now. Your interview has been successfully uploaded.";
     extraContent.innerHTML = "";
     extraContent.style.display = "none";
-  } else if (currentVideo === 4) {
+  } else if (currentVideo === 2) {
     extraContent.style.display = "block";
     extraContent.innerHTML = '<img src="intermediateBoyPhoto.png">';
-  } else if (currentVideo === 5) {
+  } else if (currentVideo === 3) {
     extraContent.style.display = "block";
     extraContent.innerHTML = '<img src="intermediateBoyPhoto.png">';
-  } else if (currentVideo === 10) {
+  } else if (currentVideo === 7) {
     extraContent.style.display = "block";
     extraContent.innerHTML = '<img src="advancedStoryChoices.png">';
   } else {
